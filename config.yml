@@ -55,7 +55,7 @@ genesis:
       params:
         bond_denom: WEI
         max_validators: 50
-        unbonding_time: "1209600s"
+        unbonding_time: "86400s"
     mint:
       params:
         mint_denom: WEI
@@ -79,5 +79,5 @@ genesis:
          expedited_min_deposit:
            - denom: WEI
              amount: "2"
-         voting_period: "300s"
-         expedited_voting_period: "60s"
+         voting_period: "86400s"
+         expedited_voting_period: "3600s"
