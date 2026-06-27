@@ -21,13 +21,13 @@ import (
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 
 	"ethwei/app"
+	ethweimoduletypes "ethwei/x/ethwei/types"
 )
 
 const valVotingPower int64 = 900000000000000
@@ -183,12 +183,12 @@ func initAppForTestnet(app *app.App, args valArgs) *app.App {
 
 	// Fund local accounts
 	for _, accountStr := range args.accountsToFund {
-		handleErr(app.BankKeeper.MintCoins(ctx, minttypes.ModuleName, defaultCoins))
+		handleErr(app.BankKeeper.MintCoins(ctx, ethweimoduletypes.ModuleName, defaultCoins))
 
 		account, err := app.AuthKeeper.AddressCodec().StringToBytes(accountStr)
 		handleErr(err)
 
-		handleErr(app.BankKeeper.SendCoinsFromModuleToAccount(ctx, minttypes.ModuleName, account, defaultCoins))
+		handleErr(app.BankKeeper.SendCoinsFromModuleToAccount(ctx, ethweimoduletypes.ModuleName, account, defaultCoins))
 	}
 
 	return app

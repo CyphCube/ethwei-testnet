@@ -56,14 +56,6 @@ genesis:
         bond_denom: WEI
         max_validators: 5
         unbonding_time: "86400s"
-    mint:
-      params:
-        mint_denom: WEI
-        inflation_rate_change: "0.0"
-        inflation_max: "0.0"
-        inflation_min: "0.0"
-        goal_bonded: "0.67"
-        blocks_per_year: "6311520"
     crisis:
       constant_fee:
         denom: WEI
