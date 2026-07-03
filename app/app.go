@@ -190,15 +190,6 @@ func New(
 		return app.App.InitChainer(ctx, req)
 	})
 
-	// Wrap the default ante handler with Ethwei governance rules:
-	// validator-only proposals and no NoWithVeto vote option.
-	// Must be set before app.Load().
-	existingAH := app.AnteHandler()
-	decorator := NewValidatorProposalDecorator(app.StakingKeeper)
-	app.SetAnteHandler(func(ctx sdk.Context, tx sdk.Tx, simulate bool) (sdk.Context, error) {
-		return decorator.AnteHandle(ctx, tx, simulate, existingAH)
-	})
-
 	if err := app.Load(loadLatest); err != nil {
 		panic(err)
 	}

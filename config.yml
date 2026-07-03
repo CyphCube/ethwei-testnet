@@ -67,9 +67,9 @@ genesis:
        params:
          min_deposit:
            - denom: WEI
-             amount: "1"
+             amount: "100000000"
          expedited_min_deposit:
            - denom: WEI
-             amount: "2"
+             amount: "200000000"
          voting_period: "86400s"
          expedited_voting_period: "3600s"
