@@ -24,6 +24,9 @@ type BankKeeper interface {
 type MintBankKeeper interface {
 	MintCoins(ctx context.Context, moduleName string, amounts sdk.Coins) error
 	SendCoinsFromModuleToModule(ctx context.Context, senderModule, recipientModule string, amt sdk.Coins) error
+	// GetSupply is used to enforce the 10 B ETE hard cap against the actual
+	// on-chain supply, independent of the internal TotalMinted counter.
+	GetSupply(ctx context.Context, denom string) sdk.Coin
 }
 
 // ParamSubspace defines the expected Subspace interface for parameters.
