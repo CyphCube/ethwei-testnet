@@ -2,7 +2,9 @@ package keeper
 
 import (
 	"context"
+	"errors"
 
+	"cosmossdk.io/collections"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
@@ -16,7 +18,8 @@ const (
 	// blocksPerYear assumes a 5-second block time: 365.25 × 24 × 3600 / 5 = 6,311,520
 	blocksPerYear uint64 = 6_311_520
 
-	// emissionPerBlock = annualEmissionWEI / blocksPerYear = 15,843 WEI (integer floor)
+	// emissionPerBlock = annualEmissionWEI / blocksPerYear ≈ 15,844,043 WEI
+	// (≈ 15.84 ETE per block, integer floor)
 	emissionPerBlock uint64 = annualEmissionWEI / blocksPerYear
 
 	// maxAdditionalSupplyWEI: 3,000,000,000 ETE × 1,000,000 WEI/ETE = 3,000,000,000,000,000 WEI
@@ -29,6 +32,12 @@ const (
 func (k Keeper) MintBlockReward(ctx context.Context) error {
 	totalMinted, err := k.TotalMinted.Get(ctx)
 	if err != nil {
+		if !errors.Is(err, collections.ErrNotFound) {
+			// A real store error. Fail closed rather than silently resetting the
+			// emission accumulator to 0 — doing so would corrupt the hard supply
+			// cap and could allow minting beyond the 10 B ETE max supply.
+			return err
+		}
 		// first block — key not yet set
 		totalMinted = 0
 	}
