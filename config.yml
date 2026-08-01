@@ -56,6 +56,18 @@ genesis:
         bond_denom: WEI
         max_validators: 6
         unbonding_time: "86400s"
+    slashing:
+      params:
+        # ~10000 blocks at 5s ≈ 13.9h window; must sign 50% → ~7h of grace
+        # before jailing. The SDK default (100 blocks) gave only ~4 minutes,
+        # so a routine reboot or slow upgrade would slash every delegator.
+        signed_blocks_window: "10000"
+        min_signed_per_window: "0.500000000000000000"
+        downtime_jail_duration: "600s"
+        # Downtime is an accident: 0.01% (SDK default 1% was far too harsh).
+        slash_fraction_downtime: "0.000100000000000000"
+        # Double-signing is an attack, not an accident: keep it painful at 5%.
+        slash_fraction_double_sign: "0.050000000000000000"
     crisis:
       constant_fee:
         denom: WEI
