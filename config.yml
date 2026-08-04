@@ -58,11 +58,13 @@ genesis:
         unbonding_time: "86400s"
     slashing:
       params:
-        # ~10000 blocks at 5s ≈ 13.9h window; must sign 50% → ~7h of grace
-        # before jailing. The SDK default (100 blocks) gave only ~4 minutes,
-        # so a routine reboot or slow upgrade would slash every delegator.
+        # Cosmos Hub style: a 10000-block window (~13.9h at 5s) where only 5%
+        # must be signed → a validator can miss up to 9500 blocks ≈ 13h before
+        # being jailed. The SDK default (100 blocks / 50%) allowed only ~4
+        # minutes, so a routine reboot or slow upgrade would slash every
+        # delegator. Grace matters more than fast removal of dead validators.
         signed_blocks_window: "10000"
-        min_signed_per_window: "0.500000000000000000"
+        min_signed_per_window: "0.050000000000000000"
         downtime_jail_duration: "600s"
         # Downtime is an accident: 0.01% (SDK default 1% was far too harsh).
         slash_fraction_downtime: "0.000100000000000000"
