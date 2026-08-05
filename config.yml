@@ -79,11 +79,16 @@ genesis:
         community_tax: "0.000000000000000000"
     gov:
        params:
+         # 1,000,000 ETE — 0.1% of the 1B genesis supply. Default governance
+         # means anyone may propose, so the deposit is the only spam gate.
          min_deposit:
            - denom: WEI
-             amount: "100000000"
+             amount: "1000000000000"
+         # 2,000,000 ETE — a 2x premium to fast-track. (Cosmos Hub instead
+         # keeps these near-equal and relies on the 66.7% expedited vote
+         # threshold as the real gate; Ethwei chooses to charge for speed too.)
          expedited_min_deposit:
            - denom: WEI
-             amount: "200000000"
+             amount: "2000000000000"
          voting_period: "86400s"
          expedited_voting_period: "3600s"
